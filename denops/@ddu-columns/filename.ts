@@ -5,6 +5,7 @@ import {
 } from "https://deno.land/x/ddu_vim@v1.8.0/types.ts";
 import { GetTextResult } from "https://deno.land/x/ddu_vim@v1.8.0/base/column.ts";
 import { Denops, fn } from "https://deno.land/x/ddu_vim@v1.8.0/deps.ts";
+import { basename } from "https://deno.land/std@0.141.0/path/mod.ts";
 
 type Params = {
   collapsedIcon: string;
@@ -47,9 +48,11 @@ export class Column extends BaseColumn<Params> {
     endCol: number;
     item: DduItem;
   }): Promise<GetTextResult> {
-    const isDirectory = (args.item.action as ActionData).isDirectory;
+    const action = args.item?.action as ActionData;
+    const isDirectory = action.isDirectory;
     const highlights: ItemHighlight[] = [];
-    const display = args.item.display ?? args.item.word;
+    const path = basename(action.path ?? args.item.word) +
+      (isDirectory ? "/" : "");
 
     if (isDirectory) {
       const userHighlights = args.columnParams.highlights;
@@ -65,7 +68,7 @@ export class Column extends BaseColumn<Params> {
         "hl_group": userHighlights.directoryName ?? "Directory",
         col: args.startCol + args.item.__level +
           args.columnParams.iconWidth + 1,
-        width: display.length,
+        width: path.length,
       });
     }
 
@@ -75,7 +78,7 @@ export class Column extends BaseColumn<Params> {
         : args.item.__expanded
         ? args.columnParams.expandedIcon
         : args.columnParams.collapsedIcon) +
-      " " + display;
+      " " + path;
     const width = await fn.strwidth(args.denops, text) as number;
     const padding = " ".repeat(args.endCol - args.startCol - width);
 
