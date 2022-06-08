@@ -1,0 +1,75 @@
+*ddu-column-filename.txt*	Filename column for ddu.vim
+
+Author: Shougo <Shougo.Matsu at gmail.com>
+License: MIT license
+
+CONTENTS					*ddu-column-filename-contents*
+
+Introduction		|ddu-column-filename-introduction|
+Install			|ddu-column-filename-install|
+Examples		|ddu-column-filename-examples|
+Params			|ddu-column-filename-params|
+
+
+==============================================================================
+INTRODUCTION				*ddu-column-filename-introduction*
+
+This column displays filename.
+
+
+==============================================================================
+INSTALL						*ddu-column-filename-install*
+
+Please install both "ddu.vim" and "denops.vim".
+
+https://github.com/Shougo/ddu.vim
+https://github.com/vim-denops/denops.vim
+
+
+==============================================================================
+EXAMPLES					*ddu-column-filename-examples*
+>
+	call ddu#custom#patch_global({
+	    \   'columns': ['filename'],
+	    \ })
+<
+
+==============================================================================
+PARAMS						*ddu-column-filename-params*
+
+				    *ddu-column-filename-param-collapsedIcon*
+collapsedIcon	(string)
+		The collapsed directory icon.
+
+		Default: "+"
+
+				    *ddu-column-filename-param-expandedIcon*
+expandedIcon	(string)
+		The expanded directory icon.
+
+		Default: "-"
+
+				    *ddu-column-filename-param-iconWidth*
+iconWidth	(string)
+		The icon width.
+
+		Default: 1
+
+				    	*ddu-column-filename-param-highlights*
+highlights	(dictionary)
+		It specifies ddu-column-filename highlights.
+		It can contain following keys
+
+		directoryIcon			(string)
+		Specify directory icon highlight.
+		Default: "Special"
+
+		directoryName			(string)
+		Specify directory name highlight.
+		Default: "Directory"
+
+		Default: {}
+
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:noet:fen:noet:
