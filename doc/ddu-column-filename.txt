@@ -55,6 +55,12 @@ iconWidth	(string)
 
 		Default: 1
 
+				    *ddu-column-filename-param-linkIcon*
+linkIcon	(string)
+		The expanded directory icon.
+
+		Default: "@"
+
 				    	*ddu-column-filename-param-highlights*
 highlights	(dictionary)
 		It specifies ddu-column-filename highlights.
@@ -63,6 +69,18 @@ highlights	(dictionary)
 		directoryIcon			(string)
 		Specify directory icon highlight.
 		Default: "Special"
+
+		directoryName			(string)
+		Specify directory name highlight.
+		Default: "Directory"
+
+		linkIcon			(string)
+		Specify link icon highlight.
+		Default: "Comment"
+
+		linkName			(string)
+		Specify link name highlight.
+		Default: "Comment"
 
 		directoryName			(string)
 		Specify directory name highlight.
