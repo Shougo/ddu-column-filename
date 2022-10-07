@@ -2,10 +2,10 @@ import {
   BaseColumn,
   DduItem,
   ItemHighlight,
-} from "https://deno.land/x/ddu_vim@v2.5.2/types.ts";
-import { GetTextResult } from "https://deno.land/x/ddu_vim@v2.5.2/base/column.ts";
-import { Denops, fn } from "https://deno.land/x/ddu_vim@v2.5.2/deps.ts";
-import { basename } from "https://deno.land/std@0.155.0/path/mod.ts";
+} from "https://deno.land/x/ddu_vim@v1.11.0/types.ts";
+import { GetTextResult } from "https://deno.land/x/ddu_vim@v1.11.0/base/column.ts";
+import { Denops, fn } from "https://deno.land/x/ddu_vim@v1.11.0/deps.ts";
+import { basename } from "https://deno.land/std@0.159.0/path/mod.ts";
 
 type Params = {
   collapsedIcon: string;
