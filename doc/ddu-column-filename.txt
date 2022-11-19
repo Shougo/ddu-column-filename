@@ -29,8 +29,8 @@ https://github.com/vim-denops/denops.vim
 ==============================================================================
 EXAMPLES					*ddu-column-filename-examples*
 >
-	call ddu#custom#patch_global({
-	    \   'columns': ['filename'],
+	call ddu#custom#patch_global(#{
+	    \   columns: ['filename'],
 	    \ })
 <
 

@@ -2,10 +2,10 @@ import {
   BaseColumn,
   DduItem,
   ItemHighlight,
-} from "https://deno.land/x/ddu_vim@v1.11.0/types.ts";
-import { GetTextResult } from "https://deno.land/x/ddu_vim@v1.11.0/base/column.ts";
-import { Denops, fn } from "https://deno.land/x/ddu_vim@v1.11.0/deps.ts";
-import { basename } from "https://deno.land/std@0.159.0/path/mod.ts";
+} from "https://deno.land/x/ddu_vim@v.1.13.0/types.ts";
+import { GetTextResult } from "https://deno.land/x/ddu_vim@v.1.13.0/base/column.ts";
+import { Denops, fn } from "https://deno.land/x/ddu_vim@v.1.13.0/deps.ts";
+import { basename } from "https://deno.land/std@0.165.0/path/mod.ts";
 
 type Params = {
   collapsedIcon: string;
@@ -54,7 +54,7 @@ export class Column extends BaseColumn<Params> {
   }): Promise<GetTextResult> {
     const action = args.item?.action as ActionData;
     const highlights: ItemHighlight[] = [];
-    const isDirectory = action.isDirectory ?? false;
+    const isDirectory = args.item.isTree ?? false;
     const isLink = action.isLink ?? false;
     const path = basename(action.path ?? args.item.word) +
       (isDirectory ? "/" : "");
