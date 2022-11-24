@@ -29,7 +29,7 @@ type ActionData = {
 };
 
 export class Column extends BaseColumn<Params> {
-  async getLength(args: {
+  override async getLength(args: {
     denops: Denops;
     columnParams: Params;
     items: DduItem[];
@@ -45,7 +45,7 @@ export class Column extends BaseColumn<Params> {
     return Math.max(...widths);
   }
 
-  async getText(args: {
+  override async getText(args: {
     denops: Denops;
     columnParams: Params;
     startCol: number;
@@ -111,7 +111,7 @@ export class Column extends BaseColumn<Params> {
     });
   }
 
-  params(): Params {
+  override params(): Params {
     return {
       collapsedIcon: "+",
       expandedIcon: "-",
