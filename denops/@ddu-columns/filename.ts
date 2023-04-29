@@ -102,9 +102,9 @@ export class Column extends BaseColumn<Params> {
 
       highlights.push({
         name: "column-filename-link-name",
-        "hl_group": userHighlights.linkName ?? "Comment",
-        col: args.startCol + args.item.__level +
-          args.columnParams.iconWidth + 1,
+        hl_group: userHighlights.linkName ?? "Comment",
+        col: args.startCol + args.item.__level + args.columnParams.iconWidth +
+          1,
         width: path.length,
       });
     }
