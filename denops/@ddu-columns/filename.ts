@@ -2,10 +2,10 @@ import {
   BaseColumn,
   DduItem,
   ItemHighlight,
-} from "https://deno.land/x/ddu_vim@v2.3.0/types.ts";
-import { GetTextResult } from "https://deno.land/x/ddu_vim@v2.3.0/base/column.ts";
-import { Denops, fn } from "https://deno.land/x/ddu_vim@v2.3.0/deps.ts";
-import { basename } from "https://deno.land/std@0.178.0/path/mod.ts";
+} from "https://deno.land/x/ddu_vim@v2.8.3/types.ts";
+import { GetTextResult } from "https://deno.land/x/ddu_vim@v2.8.3/base/column.ts";
+import { Denops, fn } from "https://deno.land/x/ddu_vim@v2.8.3/deps.ts";
+import { basename } from "https://deno.land/std@0.185.0/path/mod.ts";
 
 type Params = {
   collapsedIcon: string;
@@ -43,7 +43,7 @@ export class Column extends BaseColumn<Params> {
           (isDirectory ? "/" : "");
 
         if (isLink && action.path) {
-          path += ` -> ${await Deno.realPath(action.path)}`
+          path += ` -> ${await Deno.realPath(action.path)}`;
         }
 
         const length = item.__level + 1 + (await fn.strwidth(
@@ -72,30 +72,30 @@ export class Column extends BaseColumn<Params> {
       (isDirectory ? "/" : "");
 
     if (isLink && action.path) {
-      path += ` -> ${await Deno.realPath(action.path)}`
+      path += ` -> ${await Deno.realPath(action.path)}`;
     }
 
     if (isDirectory) {
       const userHighlights = args.columnParams.highlights;
       highlights.push({
         name: "column-filename-directory-icon",
-        "hl_group": userHighlights.directoryIcon ?? "Special",
+        hl_group: userHighlights.directoryIcon ?? "Special",
         col: args.startCol + args.item.__level,
         width: args.columnParams.iconWidth,
       });
 
       highlights.push({
         name: "column-filename-directory-name",
-        "hl_group": userHighlights.directoryName ?? "Directory",
-        col: args.startCol + args.item.__level +
-          args.columnParams.iconWidth + 1,
+        hl_group: userHighlights.directoryName ?? "Directory",
+        col: args.startCol + args.item.__level + args.columnParams.iconWidth +
+          1,
         width: path.length,
       });
     } else if (isLink) {
       const userHighlights = args.columnParams.highlights;
       highlights.push({
         name: "column-filename-link-icon",
-        "hl_group": userHighlights.linkIcon ?? "Comment",
+        hl_group: userHighlights.linkIcon ?? "Comment",
         col: args.startCol + args.item.__level,
         width: args.columnParams.iconWidth,
       });
