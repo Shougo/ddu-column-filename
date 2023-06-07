@@ -2,10 +2,10 @@ import {
   BaseColumn,
   DduItem,
   ItemHighlight,
-} from "https://deno.land/x/ddu_vim@v2.8.3/types.ts";
-import { GetTextResult } from "https://deno.land/x/ddu_vim@v2.8.3/base/column.ts";
-import { Denops, fn } from "https://deno.land/x/ddu_vim@v2.8.3/deps.ts";
-import { basename } from "https://deno.land/std@0.185.0/path/mod.ts";
+} from "https://deno.land/x/ddu_vim@v3.0.0/types.ts";
+import { GetTextResult } from "https://deno.land/x/ddu_vim@v3.0.0/base/column.ts";
+import { Denops, fn } from "https://deno.land/x/ddu_vim@v3.0.0/deps.ts";
+import { basename } from "https://deno.land/std@0.190.0/path/mod.ts";
 
 type Params = {
   collapsedIcon: string;
@@ -109,7 +109,7 @@ export class Column extends BaseColumn<Params> {
       });
     }
 
-    const directoryIcon = args.item.__expanded
+    const directoryIcon = args.item.__expanded || args.item.isExpanded
       ? args.columnParams.expandedIcon
       : args.columnParams.collapsedIcon;
     const icon = isDirectory
