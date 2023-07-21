@@ -2,15 +2,16 @@ import {
   BaseColumn,
   DduItem,
   ItemHighlight,
-} from "https://deno.land/x/ddu_vim@v3.0.0/types.ts";
-import { GetTextResult } from "https://deno.land/x/ddu_vim@v3.0.0/base/column.ts";
-import { Denops, fn } from "https://deno.land/x/ddu_vim@v3.0.0/deps.ts";
-import { basename } from "https://deno.land/std@0.190.0/path/mod.ts";
+} from "https://deno.land/x/ddu_vim@v3.4.3/types.ts";
+import { GetTextResult } from "https://deno.land/x/ddu_vim@v3.4.3/base/column.ts";
+import { Denops, fn } from "https://deno.land/x/ddu_vim@v3.4.3/deps.ts";
+import { basename } from "https://deno.land/std@0.195.0/path/mod.ts";
 
 type Params = {
   collapsedIcon: string;
   expandedIcon: string;
   iconWidth: number;
+  indentationWidth: number;
   linkIcon: string;
   highlights: HighlightGroup;
 };
@@ -64,6 +65,7 @@ export class Column extends BaseColumn<Params> {
     endCol: number;
     item: DduItem;
   }): Promise<GetTextResult> {
+    const params = args.columnParams;
     const action = args.item?.action as ActionData;
     const highlights: ItemHighlight[] = [];
     const isDirectory = args.item.isTree ?? false;
@@ -76,49 +78,44 @@ export class Column extends BaseColumn<Params> {
     }
 
     if (isDirectory) {
-      const userHighlights = args.columnParams.highlights;
+      const userHighlights = params.highlights;
       highlights.push({
         name: "column-filename-directory-icon",
         hl_group: userHighlights.directoryIcon ?? "Special",
         col: args.startCol + args.item.__level,
-        width: args.columnParams.iconWidth,
+        width: params.iconWidth,
       });
 
       highlights.push({
         name: "column-filename-directory-name",
         hl_group: userHighlights.directoryName ?? "Directory",
-        col: args.startCol + args.item.__level + args.columnParams.iconWidth +
-          1,
+        col: args.startCol + args.item.__level + params.iconWidth + 1,
         width: path.length,
       });
     } else if (isLink) {
-      const userHighlights = args.columnParams.highlights;
+      const userHighlights = params.highlights;
       highlights.push({
         name: "column-filename-link-icon",
         hl_group: userHighlights.linkIcon ?? "Comment",
         col: args.startCol + args.item.__level,
-        width: args.columnParams.iconWidth,
+        width: params.iconWidth,
       });
 
       highlights.push({
         name: "column-filename-link-name",
         hl_group: userHighlights.linkName ?? "Comment",
-        col: args.startCol + args.item.__level + args.columnParams.iconWidth +
-          1,
+        col: args.startCol + args.item.__level + params.iconWidth + 1,
         width: path.length,
       });
     }
 
     const directoryIcon = args.item.__expanded
-      ? args.columnParams.expandedIcon
-      : args.columnParams.collapsedIcon;
-    const icon = isDirectory
-      ? directoryIcon
-      : isLink
-      ? args.columnParams.linkIcon
-      : " ";
+      ? params.expandedIcon
+      : params.collapsedIcon;
+    const icon = isDirectory ? directoryIcon : isLink ? params.linkIcon : " ";
 
-    const text = " ".repeat(args.item.__level) + icon + " " + path;
+    const text = " ".repeat(params.indentationWidth * args.item.__level) +
+      icon + " " + path;
     const width = await fn.strwidth(args.denops, text) as number;
     const padding = " ".repeat(args.endCol - args.startCol - width);
 
@@ -133,6 +130,7 @@ export class Column extends BaseColumn<Params> {
       collapsedIcon: "+",
       expandedIcon: "-",
       iconWidth: 1,
+      indentationWidth: 1,
       linkIcon: "@",
       highlights: {},
     };

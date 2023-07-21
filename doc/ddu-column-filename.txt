@@ -3,7 +3,7 @@
 Author: Shougo <Shougo.Matsu at gmail.com>
 License: MIT license
 
-CONTENTS					*ddu-column-filename-contents*
+CONTENTS                                        *ddu-column-filename-contents*
 
 Introduction		|ddu-column-filename-introduction|
 Install			|ddu-column-filename-install|
@@ -12,13 +12,13 @@ Params			|ddu-column-filename-params|
 
 
 ==============================================================================
-INTRODUCTION				*ddu-column-filename-introduction*
+INTRODUCTION                                *ddu-column-filename-introduction*
 
 This column displays filename.
 
 
 ==============================================================================
-INSTALL						*ddu-column-filename-install*
+INSTALL                                          *ddu-column-filename-install*
 
 Please install both "ddu.vim" and "denops.vim".
 
@@ -27,7 +27,7 @@ https://github.com/vim-denops/denops.vim
 
 
 ==============================================================================
-EXAMPLES					*ddu-column-filename-examples*
+EXAMPLES                                        *ddu-column-filename-examples*
 >
 	call ddu#custom#patch_global(#{
 	    \   columns: ['filename'],
@@ -35,33 +35,39 @@ EXAMPLES					*ddu-column-filename-examples*
 <
 
 ==============================================================================
-PARAMS						*ddu-column-filename-params*
+PARAMS                                            *ddu-column-filename-params*
 
-				    *ddu-column-filename-param-collapsedIcon*
+                                     *ddu-column-filename-param-collapsedIcon*
 collapsedIcon	(string)
 		The collapsed directory icon.
 
 		Default: "+"
 
-				    *ddu-column-filename-param-expandedIcon*
+                                      *ddu-column-filename-param-expandedIcon*
 expandedIcon	(string)
 		The expanded directory icon.
 
 		Default: "-"
 
-				    *ddu-column-filename-param-iconWidth*
-iconWidth	(string)
+                                         *ddu-column-filename-param-iconWidth*
+iconWidth	(number)
 		The icon width.
 
 		Default: 1
 
-				    *ddu-column-filename-param-linkIcon*
+                                  *ddu-column-filename-param-indentationWidth*
+indentationWidth (number)
+		The tree level indentation width.
+
+		Default: 1
+
+                                          *ddu-column-filename-param-linkIcon*
 linkIcon	(string)
 		The expanded directory icon.
 
 		Default: "@"
 
-				    	*ddu-column-filename-param-highlights*
+                                        *ddu-column-filename-param-highlights*
 highlights	(dictionary)
 		It specifies ddu-column-filename highlights.
 		It can contain following keys
