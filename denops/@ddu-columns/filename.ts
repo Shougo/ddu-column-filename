@@ -114,10 +114,13 @@ export class Column extends BaseColumn<Params> {
       : params.collapsedIcon;
     const icon = isDirectory ? directoryIcon : isLink ? params.linkIcon : " ";
 
-    const text = " ".repeat(params.indentationWidth * args.item.__level) +
+    const text =
+      " ".repeat(Math.max(params.indentationWidth * args.item.__level, 0)) +
       icon + " " + path;
     const width = await fn.strwidth(args.denops, text) as number;
-    const padding = " ".repeat(args.endCol - args.startCol - width);
+    const padding = " ".repeat(
+      Math.max(args.endCol - args.startCol - width, 0),
+    );
 
     return Promise.resolve({
       text: text + padding,
