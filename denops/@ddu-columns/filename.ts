@@ -2,10 +2,10 @@ import {
   BaseColumn,
   DduItem,
   ItemHighlight,
-} from "https://deno.land/x/ddu_vim@v3.4.3/types.ts";
-import { GetTextResult } from "https://deno.land/x/ddu_vim@v3.4.3/base/column.ts";
-import { Denops, fn } from "https://deno.land/x/ddu_vim@v3.4.3/deps.ts";
-import { basename } from "https://deno.land/std@0.195.0/path/mod.ts";
+} from "https://deno.land/x/ddu_vim@v4.0.0/types.ts";
+import { GetTextResult } from "https://deno.land/x/ddu_vim@v4.0.0/base/column.ts";
+import { Denops, fn } from "https://deno.land/x/ddu_vim@v4.0.0/deps.ts";
+import { basename } from "jsr:@std/path@0.224.0";
 
 type Params = {
   collapsedIcon: string;
@@ -27,6 +27,7 @@ type ActionData = {
   isDirectory?: boolean;
   isLink?: boolean;
   path?: string;
+  parent?: string;
 };
 
 export class Column extends BaseColumn<Params> {
@@ -73,6 +74,9 @@ export class Column extends BaseColumn<Params> {
     let path = basename(action.path ?? args.item.word) +
       (isDirectory ? "/" : "");
 
+    if (args.item.__groupedPath) {
+      path = `${args.item.__groupedPath}${path}`;
+    }
     if (isLink && action.path) {
       path += ` -> ${await Deno.realPath(action.path)}`;
     }
