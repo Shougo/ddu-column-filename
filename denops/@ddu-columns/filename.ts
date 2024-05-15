@@ -45,7 +45,13 @@ export class Column extends BaseColumn<Params> {
           (isDirectory ? "/" : "");
 
         if (isLink && action.path) {
-          path += ` -> ${await Deno.realPath(action.path)}`;
+          let realPath = '?';
+          try {
+            realPath = await Deno.realPath(action.path);
+          } catch (_e: unknown) {
+            // Ignore link error
+          }
+          path += ` -> ${realPath}`;
         }
 
         const length = item.__level + 1 + (await fn.strwidth(
@@ -78,7 +84,13 @@ export class Column extends BaseColumn<Params> {
       path = `${args.item.__groupedPath}${path}`;
     }
     if (isLink && action.path) {
-      path += ` -> ${await Deno.realPath(action.path)}`;
+      let realPath = '?';
+      try {
+        realPath = await Deno.realPath(action.path);
+      } catch (_e: unknown) {
+        // Ignore link error
+      }
+      path += ` -> ${realPath}`;
     }
 
     if (isDirectory) {
