@@ -2,10 +2,13 @@ import {
   BaseColumn,
   DduItem,
   ItemHighlight,
-} from "https://deno.land/x/ddu_vim@v4.0.0/types.ts";
-import { GetTextResult } from "https://deno.land/x/ddu_vim@v4.0.0/base/column.ts";
-import { Denops, fn } from "https://deno.land/x/ddu_vim@v4.0.0/deps.ts";
-import { basename } from "jsr:@std/path@0.224.0";
+} from "https://deno.land/x/ddu_vim@v4.1.0/types.ts";
+import { GetTextResult } from "https://deno.land/x/ddu_vim@v4.1.0/base/column.ts";
+import {
+  basename,
+  Denops,
+  fn,
+} from "https://deno.land/x/ddu_vim@v4.1.0/deps.ts";
 
 type Params = {
   collapsedIcon: string;
@@ -38,25 +41,15 @@ export class Column extends BaseColumn<Params> {
   }): Promise<number> {
     const widths = await Promise.all(args.items.map(
       async (item) => {
-        const action = item?.action as ActionData;
-        const isLink = action.isLink ?? false;
-        const isDirectory = item.isTree ?? false;
-        let path = basename(action.path ?? item.word) +
-          (isDirectory ? "/" : "");
-
-        if (isLink && action.path) {
-          let realPath = '?';
-          try {
-            realPath = await Deno.realPath(action.path);
-          } catch (_e: unknown) {
-            // Ignore link error
-          }
-          path += ` -> ${realPath}`;
-        }
+        const baseText = await this.getBaseText({
+          denops: args.denops,
+          columnParams: args.columnParams,
+          item,
+        });
 
         const length = item.__level + 1 + (await fn.strwidth(
           args.denops,
-          args.columnParams.iconWidth + path,
+          args.columnParams.iconWidth + baseText,
         ) as number);
 
         return length;
@@ -65,26 +58,22 @@ export class Column extends BaseColumn<Params> {
     return Math.max(...widths);
   }
 
-  override async getText(args: {
+  override async getBaseText(args: {
     denops: Denops;
     columnParams: Params;
-    startCol: number;
-    endCol: number;
     item: DduItem;
   }): Promise<GetTextResult> {
-    const params = args.columnParams;
     const action = args.item?.action as ActionData;
-    const highlights: ItemHighlight[] = [];
     const isDirectory = args.item.isTree ?? false;
-    const isLink = action.isLink ?? false;
     let path = basename(action.path ?? args.item.word) +
       (isDirectory ? "/" : "");
+    const isLink = action.isLink ?? false;
 
     if (args.item.__groupedPath) {
       path = `${args.item.__groupedPath}${path}`;
     }
     if (isLink && action.path) {
-      let realPath = '?';
+      let realPath = "?";
       try {
         realPath = await Deno.realPath(action.path);
       } catch (_e: unknown) {
@@ -92,6 +81,23 @@ export class Column extends BaseColumn<Params> {
       }
       path += ` -> ${realPath}`;
     }
+
+    return path;
+  }
+
+  override async getText(args: {
+    denops: Denops;
+    columnParams: Params;
+    startCol: number;
+    endCol: number;
+    item: DduItem;
+    baseText: string;
+  }): Promise<GetTextResult> {
+    const params = args.columnParams;
+    const action = args.item?.action as ActionData;
+    const highlights: ItemHighlight[] = [];
+    const isDirectory = args.item.isTree ?? false;
+    const isLink = action.isLink ?? false;
 
     if (isDirectory) {
       const userHighlights = params.highlights;
@@ -106,7 +112,7 @@ export class Column extends BaseColumn<Params> {
         name: "column-filename-directory-name",
         hl_group: userHighlights.directoryName ?? "Directory",
         col: args.startCol + args.item.__level + params.iconWidth + 1,
-        width: path.length,
+        width: args.baseText.length,
       });
     } else if (isLink) {
       const userHighlights = params.highlights;
@@ -121,7 +127,7 @@ export class Column extends BaseColumn<Params> {
         name: "column-filename-link-name",
         hl_group: userHighlights.linkName ?? "Comment",
         col: args.startCol + args.item.__level + params.iconWidth + 1,
-        width: path.length,
+        width: args.baseText.length,
       });
     }
 
@@ -132,7 +138,7 @@ export class Column extends BaseColumn<Params> {
 
     const text =
       " ".repeat(Math.max(params.indentationWidth * args.item.__level, 0)) +
-      icon + " " + path;
+      icon + " " + args.baseText;
     const width = await fn.strwidth(args.denops, text) as number;
     const padding = " ".repeat(
       Math.max(args.endCol - args.startCol - width, 0),
