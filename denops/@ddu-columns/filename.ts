@@ -2,13 +2,13 @@ import {
   BaseColumn,
   DduItem,
   ItemHighlight,
-} from "https://deno.land/x/ddu_vim@v4.1.0/types.ts";
-import { GetTextResult } from "https://deno.land/x/ddu_vim@v4.1.0/base/column.ts";
+} from "https://deno.land/x/ddu_vim@v4.1.1/types.ts";
+import { GetTextResult } from "https://deno.land/x/ddu_vim@v4.1.1/base/column.ts";
 import {
   basename,
   Denops,
   fn,
-} from "https://deno.land/x/ddu_vim@v4.1.0/deps.ts";
+} from "https://deno.land/x/ddu_vim@v4.1.1/deps.ts";
 
 type Params = {
   collapsedIcon: string;
@@ -62,7 +62,7 @@ export class Column extends BaseColumn<Params> {
     denops: Denops;
     columnParams: Params;
     item: DduItem;
-  }): Promise<GetTextResult> {
+  }): Promise<string> {
     const action = args.item?.action as ActionData;
     const isDirectory = args.item.isTree ?? false;
     let path = basename(action.path ?? args.item.word) +
@@ -91,7 +91,7 @@ export class Column extends BaseColumn<Params> {
     startCol: number;
     endCol: number;
     item: DduItem;
-    baseText: string;
+    baseText?: string;
   }): Promise<GetTextResult> {
     const params = args.columnParams;
     const action = args.item?.action as ActionData;
@@ -108,12 +108,14 @@ export class Column extends BaseColumn<Params> {
         width: params.iconWidth,
       });
 
-      highlights.push({
-        name: "column-filename-directory-name",
-        hl_group: userHighlights.directoryName ?? "Directory",
-        col: args.startCol + args.item.__level + params.iconWidth + 1,
-        width: args.baseText.length,
-      });
+      if (args.baseText) {
+        highlights.push({
+          name: "column-filename-directory-name",
+          hl_group: userHighlights.directoryName ?? "Directory",
+          col: args.startCol + args.item.__level + params.iconWidth + 1,
+          width: args.baseText.length,
+        });
+      }
     } else if (isLink) {
       const userHighlights = params.highlights;
       highlights.push({
@@ -123,12 +125,14 @@ export class Column extends BaseColumn<Params> {
         width: params.iconWidth,
       });
 
-      highlights.push({
-        name: "column-filename-link-name",
-        hl_group: userHighlights.linkName ?? "Comment",
-        col: args.startCol + args.item.__level + params.iconWidth + 1,
-        width: args.baseText.length,
-      });
+      if (args.baseText) {
+        highlights.push({
+          name: "column-filename-link-name",
+          hl_group: userHighlights.linkName ?? "Comment",
+          col: args.startCol + args.item.__level + params.iconWidth + 1,
+          width: args.baseText.length,
+        });
+      }
     }
 
     const directoryIcon = args.item.__expanded
