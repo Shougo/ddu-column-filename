@@ -1,14 +1,13 @@
 import {
   BaseColumn,
   DduItem,
-  ItemHighlight,
-} from "https://deno.land/x/ddu_vim@v4.1.1/types.ts";
-import { GetTextResult } from "https://deno.land/x/ddu_vim@v4.1.1/base/column.ts";
-import {
-  basename,
   Denops,
-  fn,
-} from "https://deno.land/x/ddu_vim@v4.1.1/deps.ts";
+  ItemHighlight,
+} from "jsr:@shougo/ddu-vim@5.0.0/types";
+import { GetTextResult } from "jsr:@shougo/ddu-vim@5.0.0/column";
+
+import { basename } from "jsr:@std/path@1.0.0";
+import * as fn from "jsr:@denops/std@7.0.0/function";
 
 type Params = {
   collapsedIcon: string;
