@@ -1,13 +1,12 @@
 import {
-  BaseColumn,
   DduItem,
-  Denops,
   ItemHighlight,
-} from "jsr:@shougo/ddu-vim@5.0.0/types";
-import { GetTextResult } from "jsr:@shougo/ddu-vim@5.0.0/column";
+} from "jsr:@shougo/ddu-vim@6.1.0/types";
+import { BaseColumn, GetTextResult } from "jsr:@shougo/ddu-vim@6.1.0/column";
 
-import { basename } from "jsr:@std/path@1.0.2";
-import * as fn from "jsr:@denops/std@7.0.0/function";
+import type { Denops } from "jsr:@denops/std@~7.1.0";
+import { basename } from "jsr:@std/path@1.0.3/basename";
+import * as fn from "jsr:@denops/std@7.1.1/function";
 
 type Params = {
   collapsedIcon: string;
