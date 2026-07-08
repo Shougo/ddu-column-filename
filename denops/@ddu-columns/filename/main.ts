@@ -75,7 +75,10 @@ export class Column extends BaseColumn<Params> {
       } catch (_e: unknown) {
         // Ignore link error
       }
-      const maxTargetWidth = Math.max(args.columnParams.maxSymlinkTargetWidth, 0);
+      const maxTargetWidth = Math.max(
+        args.columnParams.maxSymlinkTargetWidth,
+        0,
+      );
       const targetText = maxTargetWidth > 0
         ? this.#truncateByWidth(realPath, maxTargetWidth)
         : realPath;
@@ -185,7 +188,8 @@ export class Column extends BaseColumn<Params> {
   }
 
   #charWidth(ch: string): number {
-    return /[\u1100-\u115f\u2329\u232a\u2e80-\u303e\u3040-\u3247\u3250-\u4dbf\u4e00-\ua4c6\ua960-\ua97c\ua980-\ua9df\ua9e0-\ua9ff\uaa00-\uabf9\uf900-\ufaff\ufe10-\ufe19\ufe30-\ufe6b\uff01-\uff60\uffe0-\uffe6]/.test(ch)
+    return /[\u1100-\u115f\u2329\u232a\u2e80-\u303e\u3040-\u3247\u3250-\u4dbf\u4e00-\ua4c6\ua960-\ua97c\ua980-\ua9df\ua9e0-\ua9ff\uaa00-\uabf9\uf900-\ufaff\ufe10-\ufe19\ufe30-\ufe6b\uff01-\uff60\uffe0-\uffe6]/
+        .test(ch)
       ? 2
       : 1;
   }
