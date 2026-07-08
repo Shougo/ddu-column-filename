@@ -11,6 +11,7 @@ type Params = {
   iconWidth: number;
   indentationWidth: number;
   linkIcon: string;
+  maxSymlinkTargetWidth: number;
   highlights: HighlightGroup;
 };
 
@@ -74,7 +75,11 @@ export class Column extends BaseColumn<Params> {
       } catch (_e: unknown) {
         // Ignore link error
       }
-      path += ` -> ${realPath}`;
+      const maxTargetWidth = Math.max(args.columnParams.maxSymlinkTargetWidth, 0);
+      const targetText = maxTargetWidth > 0
+        ? this.#truncateByWidth(realPath, maxTargetWidth)
+        : realPath;
+      path += ` -> ${targetText}`;
     }
 
     return path;
@@ -108,7 +113,7 @@ export class Column extends BaseColumn<Params> {
           name: "column-filename-directory-name",
           hl_group: userHighlights.directoryName ?? "Directory",
           col: args.startCol + args.item.__level + params.iconWidth + 1,
-          width: args.baseText.length,
+          width: await fn.strwidth(args.denops, args.baseText) as number,
         });
       }
     } else if (isLink) {
@@ -125,7 +130,7 @@ export class Column extends BaseColumn<Params> {
           name: "column-filename-link-name",
           hl_group: userHighlights.linkName ?? "Comment",
           col: args.startCol + args.item.__level + params.iconWidth + 1,
-          width: args.baseText.length,
+          width: await fn.strwidth(args.denops, args.baseText) as number,
         });
       }
     }
@@ -156,7 +161,32 @@ export class Column extends BaseColumn<Params> {
       iconWidth: 1,
       indentationWidth: 1,
       linkIcon: "@",
+      maxSymlinkTargetWidth: 48,
       highlights: {},
     };
+  }
+
+  #truncateByWidth(text: string, maxWidth: number): string {
+    if (maxWidth <= 0) {
+      return text;
+    }
+
+    let width = 0;
+    let out = "";
+    for (const ch of text) {
+      const chWidth = this.#charWidth(ch);
+      if (width + chWidth > maxWidth) {
+        return out + "...";
+      }
+      out += ch;
+      width += chWidth;
+    }
+    return out;
+  }
+
+  #charWidth(ch: string): number {
+    return /[\u1100-\u115f\u2329\u232a\u2e80-\u303e\u3040-\u3247\u3250-\u4dbf\u4e00-\ua4c6\ua960-\ua97c\ua980-\ua9df\ua9e0-\ua9ff\uaa00-\uabf9\uf900-\ufaff\ufe10-\ufe19\ufe30-\ufe6b\uff01-\uff60\uffe0-\uffe6]/.test(ch)
+      ? 2
+      : 1;
   }
 }
