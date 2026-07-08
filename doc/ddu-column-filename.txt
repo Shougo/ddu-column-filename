@@ -67,6 +67,13 @@ linkIcon	(string)
 
 		Default: "@"
 
+                                   *ddu-column-filename-param-maxSymlinkTargetWidth*
+maxSymlinkTargetWidth	(number)
+		The maximum display width of symlink targets.
+		If the target path exceeds this width, it will be truncated and an ellipsis will be appended.
+
+		Default: 48
+
                                         *ddu-column-filename-param-highlights*
 highlights	(dictionary)
 		It specifies ddu-column-filename highlights.
