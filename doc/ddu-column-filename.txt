@@ -34,6 +34,16 @@ EXAMPLES                                        *ddu-column-filename-examples*
 	    \ })
 <
 
+	call ddu#custom#patch_global(#{
+	    \   columns: ['filename'],
+	    \   params: #{
+	    \     filename: #{
+	    \       maxSymlinkTargetWidth: 24,
+	    \     },
+	    \   },
+	    \ })
+<
+
 ==============================================================================
 PARAMS                                            *ddu-column-filename-params*
 
@@ -63,7 +73,7 @@ indentationWidth (number)
 
                                           *ddu-column-filename-param-linkIcon*
 linkIcon	(string)
-		The expanded directory icon.
+		The link icon.
 
 		Default: "@"
 
@@ -94,10 +104,6 @@ highlights	(dictionary)
 		linkName			(string)
 		Specify link name highlight.
 		Default: "Comment"
-
-		directoryName			(string)
-		Specify directory name highlight.
-		Default: "Directory"
 
 		Default: {}
 
