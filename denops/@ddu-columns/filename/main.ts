@@ -29,6 +29,28 @@ type ActionData = {
   parent?: string;
 };
 
+const WIDE_CHAR_RANGES = [
+  "\\u1100-\\u115f",
+  "\\u2329\\u232a",
+  "\\u2e80-\\u303e",
+  "\\u3040-\\u3247",
+  "\\u3250-\\u4dbf",
+  "\\u4e00-\\ua4c6",
+  "\\ua960-\\ua97c",
+  "\\ua980-\\ua9df",
+  "\\ua9e0-\\ua9ff",
+  "\\uaa00-\\uabf9",
+  "\\uf900-\\ufaff",
+  "\\ufe10-\\ufe19",
+  "\\ufe30-\\ufe6b",
+  "\\uff01-\\uff60",
+  "\\uffe0-\\uffe6",
+];
+
+const WIDE_CHAR_PATTERN = new RegExp(
+  `[${WIDE_CHAR_RANGES.join("")}]`,
+);
+
 export class Column extends BaseColumn<Params> {
   override async getLength(args: {
     denops: Denops;
@@ -188,9 +210,6 @@ export class Column extends BaseColumn<Params> {
   }
 
   #charWidth(ch: string): number {
-    return /[\u1100-\u115f\u2329\u232a\u2e80-\u303e\u3040-\u3247\u3250-\u4dbf\u4e00-\ua4c6\ua960-\ua97c\ua980-\ua9df\ua9e0-\ua9ff\uaa00-\uabf9\uf900-\ufaff\ufe10-\ufe19\ufe30-\ufe6b\uff01-\uff60\uffe0-\uffe6]/
-        .test(ch)
-      ? 2
-      : 1;
+    return WIDE_CHAR_PATTERN.test(ch) ? 2 : 1;
   }
 }
