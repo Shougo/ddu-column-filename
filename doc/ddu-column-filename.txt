@@ -28,12 +28,7 @@ https://github.com/vim-denops/denops.vim
 
 ==============================================================================
 EXAMPLES                                        *ddu-column-filename-examples*
->
-	call ddu#custom#patch_global(#{
-	    \   columns: ['filename'],
-	    \ })
-<
-
+>vim
 	call ddu#custom#patch_global(#{
 	    \   columns: ['filename'],
 	    \   params: #{
@@ -77,10 +72,11 @@ linkIcon	(string)
 
 		Default: "@"
 
-                                   *ddu-column-filename-param-maxSymlinkTargetWidth*
+                             *ddu-column-filename-param-maxSymlinkTargetWidth*
 maxSymlinkTargetWidth	(number)
 		The maximum display width of symlink targets.
-		If the target path exceeds this width, it will be truncated and an ellipsis will be appended.
+		If the target path exceeds this width, it will be truncated
+		and an ellipsis will be appended.
 
 		Default: 48
 
